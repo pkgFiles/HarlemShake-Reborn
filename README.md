@@ -1,7 +1,7 @@
 # HarlemShake Reborn
 This tweak brings the iconic Harlem Shake meme back to life – with a twist.
 Icons on your screen flip, spin, and dance wildly to the legendary tune, just like it’s 2013 all over again.
-Inspired by the viral craze, this app adds a touch of chaos and fun to your UI.
+Inspired by the viral craze, these animations adds a touch of chaos and fun to your UI.
 Perfect for nostalgic vibes, party demos, or just confusing your friends.
 
 ## Compatibility
