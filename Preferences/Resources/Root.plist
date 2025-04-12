@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string> </string>
+		</dict>
+		<dict>
+			<key>cellClass</key>
+			<string>HarlemShakeRebornPrefs.HSSingleCreditCell</string>
+			<key>height</key>
+			<real>60</real>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>General</string>
+		</dict>
+		<dict>
+			<key>cellClass</key>
+			<string>HarlemShakeRebornPrefs.HSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.pkgfiles.harlemshakeprefs</string>
+			<key>key</key>
+			<string>isTweakEnabled</string>
+			<key>cellTitleLabel</key>
+			<string>Enabled</string>
+			<key>cellSubtitleLabel</key>
+			<string>Enable/Disable the tweak.</string>
+			<key>height</key>
+			<real>60</real>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string> </string>
+		</dict>
+		<dict>
+			<key>cellClass</key>
+			<string>HarlemShakeRebornPrefs.HSInfoButtonCell</string>
+			<key>buttonLabelText</key>
+			<string>FAQ: How to trigger the tweak?</string>
+			<key>buttonInfoText</key>
+			<string>The tweak can be triggered with a shaking gesture. Make sure you're on the home screen to activate the Harlem Shake.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerAlignment</key>
+			<real>1</real>
+			<key>footerText</key>
+			<string>Made with 🤍</string>
+			<key>isStaticText</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>footerAlignment</key>
+			<real>1</real>
+			<key>footerText</key>
+			<string>© 2025, ★ Install Package Files</string>
+			<key>isStaticText</key>
+			<true/>
+		</dict>
+	</array>
+	<key>title</key>
+	<string> </string>
+</dict>
+</plist>

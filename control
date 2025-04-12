@@ -1,0 +1,12 @@
+Package: com.pkgfiles.harlemshakereborn
+Name: HarlemShake Reborn
+Version: 1.0
+Architecture: iphoneos-arm
+Description: You probably thought the Harlem Shake was over, didn't you?
+Maintainer: pkgFiles
+Author: pkgFiles
+Section: Tweaks
+Depends: dev.theos.orion14, firmware (>= 14.0)
+SileoDepiction: https://pkgfiles.github.io/sileodepictions/com.pkgfiles.harlemshakereborn/depiction.json
+Depiction: https://pkgfiles.github.io/depictions/?p=com.pkgfiles.harlemshakereborn
+Icon: https://raw.githubusercontent.com/pkgFiles/pkgfiles.github.io/main/assets/TweakIcons/HarlemShakeReborn.png

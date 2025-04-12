@@ -1,0 +1,4 @@
+module HarlemShakeRebornC {
+    umbrella "."
+    export *
+}
