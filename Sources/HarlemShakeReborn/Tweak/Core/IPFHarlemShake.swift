@@ -176,6 +176,7 @@ class IPFHarlemShake: NSObject, AVAudioPlayerDelegate {
     func removeAll() {
         self.audioPlayer = nil
         self.shakingViews.forEach({ $0.layer.removeAllAnimations() })
+        self.lonerView?.layer.removeAllAnimations()
         self.isShaking = false
     }
     

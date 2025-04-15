@@ -1,6 +1,6 @@
 Package: com.pkgfiles.harlemshakereborn
 Name: HarlemShake Reborn
-Version: 1.0
+Version: 1.0.1
 Architecture: iphoneos-arm
 Description: You probably thought the Harlem Shake was over, didn't you?
 Maintainer: pkgFiles

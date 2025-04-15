@@ -40,15 +40,43 @@ class UIWindowHook: ClassHook<UIWindow> {
         guard let isSreenOn = (SBBacklightController.sharedInstance() as? SBBacklightController)?.screenIsOn, isSreenOn,
               let isShowingHomescreen = (UIApplication.shared as? SpringBoard)?.isShowingHomescreen(), isShowingHomescreen else { return }
         
-        if event.type == .motion, !(harlemShake?.isShaking ?? false) {
-            if let lonerView = getAnimateableLonerView() {
-                harlemShake = IPFHarlemShake(lonerView: lonerView)
-                DispatchQueue.main.async {
-                    harlemShake?.shake {
-                        harlemShake = nil
-                        remLog("Completed")
-                    }
+        if event.type == .motion {
+            if !(harlemShake?.isShaking ?? false) {
+                startHarlemShake()
+            } else {
+                /*
+                 User has the ability to stop the HarlemShake...
+                 This also handles a rare bug where the AVAudioPlayer may fail, causing the animations to loop endlessly without stopping.
+                */
+                guard let currentVC = target.rootViewController else { return }
+                
+                let title = "HarlemShake Reborn"
+                let message = "HarlemShake is currently playing. Would you like to stop it?"
+                let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive)
+                let stopAction = UIAlertAction(title: "Stop", style: .default) { _ in
+                    harlemShake?.removeAll()
+                    harlemShake = nil
+                    remLog("Stopped")
                 }
+                
+                alertController.addAction(stopAction)
+                alertController.addAction(dismissAction)
+                
+                currentVC.present(alertController, animated: true)
+            }
+        }
+    }
+    
+    //orion:new
+    func startHarlemShake() {
+        guard let lonerView = getAnimateableLonerView() else { return }
+        
+        harlemShake = IPFHarlemShake(lonerView: lonerView)
+        DispatchQueue.main.async {
+            harlemShake?.shake {
+                harlemShake = nil
+                remLog("Completed")
             }
         }
     }
