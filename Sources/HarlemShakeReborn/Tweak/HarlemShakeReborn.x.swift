@@ -4,40 +4,40 @@ import HarlemShakeRebornC
 // HarlemShake-Reborn - You probably thought the Harlem Shake was over, didn't you?
 // For modern iOS 14.0 - 16.7.10
 // Based on original from @FilippoBiga: https://github.com/FilippoBiga/Harlem-Shake
-//MARK: - Variables
-var tweakPrefs: SettingsModel = SettingsModel()
-
 //MARK: - Propertys
 var harlemShake: IPFHarlemShake?
 
 //MARK: - Initialize Tweak
-struct HSWindow: HookGroup {}
 struct HarlemShake: Tweak {
     init() {
-        remLog("Preferences Loading...")
-        tweakPrefs = TweakPreferences.preferences.loadPreferences()
+        JailbreakTweakManager.shared.configure(with: jbroot("/"))
+        let _ = JailbreakTweakPreferencesManager.current.settings
         
-        let windowHook: HSWindow = HSWindow()
-
-        switch tweakPrefs.isTweakEnabled {
+        /*
+            This is no longer needed, as we no longer use HookGroups.
+            Preferences are now reloaded when their state changes.
+            As a result, the tweak no longer requires a respring after being activated or disabled.
+        
+        switch JailbreakTweakPreferencesManager.current.settings.isTweakEnabled {
         case true:
             remLog("Tweak is Enabled! :)")
-            windowHook.activate()
+            HSWindow().activate()
         case false:
             remLog("Tweak is Disabled! :(")
             break
         }
+        */
     }
 }
 
 //MARK: - Hooks
 class UIWindowHook: ClassHook<UIWindow> {
-    typealias Group = HSWindow
     
     func motionEnded(_ motion: UIEvent.EventSubtype, withEvent event: UIEvent) {
         orig.motionEnded(motion, withEvent: event)
         
-        guard let isSreenOn = (SBBacklightController.sharedInstance() as? SBBacklightController)?.screenIsOn, isSreenOn,
+        guard JailbreakTweakPreferencesManager.current.settings.isTweakEnabled,
+              let isSreenOn = (SBBacklightController.sharedInstance() as? SBBacklightController)?.screenIsOn, isSreenOn,
               let isShowingHomescreen = (UIApplication.shared as? SpringBoard)?.isShowingHomescreen(), isShowingHomescreen else { return }
         
         if event.type == .motion {

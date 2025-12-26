@@ -30,36 +30,32 @@ class HSCreditView: UIView {
 
     //MARK: - Propertys
     private lazy var titleLabel: UILabel = {
-        let label = UILabel().createLabelWithFontPath(text: self.username.user, fontSize: 16)
+        let label = UILabel().createLabelWithFontPath(fontSize: 16)
+        label.text = "Loading..."
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var subtitleLabel: UILabel = {
-        let label = UILabel().createLabelWithFontPath(text: "@" + self.username.shorthand, fontSize: 13)
+        let label = UILabel().createLabelWithFontPath(fontSize: 13)
         label.textColor = UIColor.gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var avatarImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(contentsOfFile: prefsAssetsPath + "Credits/DefaultIcon.png"))
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    //MARK: - Variables
-    let username: (user: String, shorthand: String)
-    let avatarUrlString: String
-    
     //MARK: - Initializer
-    init(username: (user: String, shorthand: String), avatarUrlString: String) {
-        self.username = username
-        self.avatarUrlString = avatarUrlString
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        super.init(frame: .zero)
-        setupCreditView()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
@@ -70,14 +66,11 @@ class HSCreditView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        avatarImageView.layer.cornerRadius = 10
-        avatarImageView.layer.masksToBounds = true
+        avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
     }
     
     //MARK: - Functions
-    private func setupCreditView() {
-        getProfilePicture(from: self.avatarUrlString)
-        
+    private func setupUI() {
         self.addSubview(avatarImageView)
         self.addSubview(titleLabel)
         self.addSubview(subtitleLabel)
@@ -99,14 +92,9 @@ class HSCreditView: UIView {
         ])
     }
     
-    func getProfilePicture(from urlString: String) {
-        guard let url = URL(string: "https://pbs.twimg.com/profile_images/" + urlString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.avatarImageView.image = image
-                }
-            }
-        }.resume()
+    func configure(with developer: Developer, defaultAvatar: UIImage?) {
+        titleLabel.text = developer.name
+        subtitleLabel.text = "@" + developer.shorthand
+        avatarImageView.image = developer.avatar ?? defaultAvatar
     }
 }

@@ -24,12 +24,8 @@
  
 */
 
-import UIKit
+import Foundation
 
-struct SettingsModel: Codable {
-    // General
-    var isTweakEnabled: Bool = false
-    
-    // Appearance
-    // [...]
+protocol HSInfoButtonCellDelegate: NSObject {
+    func showDetailsAlert(title: String, message: String)
 }

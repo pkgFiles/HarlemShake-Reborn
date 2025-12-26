@@ -1,19 +1,19 @@
 /*
  
  MIT License
-
+ 
  Copyright (c) 2025 ★ Install Package Files
-
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
-
+ 
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
-
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,14 +26,29 @@
 
 import UIKit
 
-extension UILabel {
-    func createLabelWithFontPath(text: String, fontSize: CGFloat) -> UILabel {
-        let ttfName: String = "Boogaloo-Regular.ttf"
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        label.text = text
-        label.font = UIFont(ttfAtPath: prefsAssetsPath + "Fonts/\(ttfName)", size: fontSize)
-        label.textColor = traitCollection.userInterfaceStyle == .light ? UIColor.black : UIColor.white
+struct Developer {
+
+    enum Social: String {
+        case twitterX = "X"
+        case kofi = "Ko-Fi"
         
-        return label
+        var urlAddress: String {
+            switch self {
+            case .twitterX: return "https://x.com/"
+            case .kofi:     return "https://ko-fi.com/"
+            }
+        }
+    }
+    
+    let name: String
+    let shorthand: String
+    var avatar: UIImage?
+    let social: [Social]
+    
+    init(name: String, shorthand: String, avatar: UIImage? = nil, social: [Social]) {
+        self.name = name
+        self.shorthand = shorthand
+        self.avatar = avatar
+        self.social = social
     }
 }

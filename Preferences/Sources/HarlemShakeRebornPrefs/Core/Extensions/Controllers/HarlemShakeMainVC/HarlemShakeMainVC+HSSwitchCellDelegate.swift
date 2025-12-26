@@ -24,12 +24,19 @@
  
 */
 
-import UIKit
+import Preferences
+import HarlemShakeRebornPrefsC
 
-struct SettingsModel: Codable {
-    // General
-    var isTweakEnabled: Bool = false
+@available(iOS 13.0, *)
+extension HarlemShakeMainVC: HSSwitchCellDelegate {
     
-    // Appearance
-    // [...]
+    func switchCell(valueChanged isOn: Bool, for specifier: PSSpecifier) {
+        guard let plistData: NSDictionary = NSDictionary(contentsOfFile: JailbreakTweakManager.shared.plistPath) else { return }
+        guard let propertyKey: String = specifier.property(forKey: "key") as? String else { return }
+        plistData.setValue(isOn, forKey: propertyKey)
+        plistData.write(toFile: JailbreakTweakManager.shared.plistPath, atomically: true)
+        
+        // Post notification to change settings value and handles On/Off state of the tweak without respring...
+        NSDistributedNotificationCenter.default.post(name: .didUpdateEnabledStateValue, object: nil)
+    }
 }

@@ -24,22 +24,17 @@
  
 */
 
-import Foundation
+import UIKit
 
-extension HarlemShakeMainVC {
+struct PackageConfiguration {
     
-    override var specifiers: NSMutableArray? {
-        get {
-            if let specifiers = value(forKey: "_specifiers") as? NSMutableArray {
-                return specifiers
-            } else {
-                let specifiers = loadSpecifiers(fromPlistName: "Root", target: self)
-                setValue(specifiers, forKey: "_specifiers")
-                return specifiers
-            }
-        }
-        set {
-            super.specifiers = newValue
-        }
+    let bundleName: String
+    let plistName: String
+    let tweakColor: UIColor
+    
+    init(bundleName: String, plistName: String, tweakColor: UIColor) {
+        self.bundleName = bundleName + ".bundle"
+        self.plistName = plistName + ".plist"
+        self.tweakColor = tweakColor
     }
 }

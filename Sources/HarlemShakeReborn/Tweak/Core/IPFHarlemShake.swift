@@ -46,7 +46,7 @@ class IPFHarlemShake: NSObject, AVAudioPlayerDelegate {
     private var audioURL: URL {
         let basicPath: String = "/Library/Application Support/HarlemShake/"
         let audioName: String = "HarlemShake.mp3"
-        let audioPath = FileManager.default.fileExists(atPath: basicPath + audioName) ? (basicPath) : ("/var/jb\(basicPath)")
+        let audioPath = FileManager.default.fileExists(atPath: jbroot(basicPath) + audioName) ? (jbroot(basicPath)) : ("/var/jb\(basicPath)")
         
         return URL(fileURLWithPath: audioPath + audioName)
     }

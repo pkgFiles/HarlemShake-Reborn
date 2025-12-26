@@ -26,10 +26,11 @@
 
 import UIKit
 
-struct SettingsModel: Codable {
-    // General
-    var isTweakEnabled: Bool = false
+@available(iOS 13.0, *)
+extension HarlemShakeMainVC: HSSingleCreditCellDelegate {
     
-    // Appearance
-    // [...]
+    func openWebsite(_ social: Developer.Social) {
+        guard let url = URL(string: social.urlAddress + mainDeveloper.shorthand) else { return }
+        UIApplication.shared.open(url)
+    }
 }

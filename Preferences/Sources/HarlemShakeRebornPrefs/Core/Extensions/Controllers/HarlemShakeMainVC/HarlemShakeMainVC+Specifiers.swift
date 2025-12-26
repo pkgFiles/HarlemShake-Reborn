@@ -24,12 +24,23 @@
  
 */
 
-import UIKit
+import Foundation
 
-struct SettingsModel: Codable {
-    // General
-    var isTweakEnabled: Bool = false
+@available(iOS 13.0, *)
+extension HarlemShakeMainVC {
     
-    // Appearance
-    // [...]
+    override var specifiers: NSMutableArray? {
+        get {
+            if let specifiers = value(forKey: "_specifiers") as? NSMutableArray {
+                return specifiers
+            } else {
+                let specifiers = loadSpecifiers(fromPlistName: "Root", target: self)
+                setValue(specifiers, forKey: "_specifiers")
+                return specifiers
+            }
+        }
+        set {
+            super.specifiers = newValue
+        }
+    }
 }

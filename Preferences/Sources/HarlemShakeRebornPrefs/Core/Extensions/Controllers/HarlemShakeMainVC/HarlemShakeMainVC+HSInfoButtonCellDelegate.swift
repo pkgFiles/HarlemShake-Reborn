@@ -25,9 +25,16 @@
 */
 
 import UIKit
+import AudioToolbox.AudioServices
 
-extension UINavigationController {
-    override open var childForStatusBarStyle: UIViewController? {
-        return topViewController
+@available(iOS 13.0, *)
+extension HarlemShakeMainVC: HSInfoButtonCellDelegate {
+    
+    func showDetailsAlert(title: String, message: String) {
+        AudioServicesPlayAlertSound(1521)
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alertController, animated: true)
     }
 }

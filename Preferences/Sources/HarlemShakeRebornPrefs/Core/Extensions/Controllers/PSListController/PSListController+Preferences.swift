@@ -24,20 +24,19 @@
  
 */
 
-import UIKit
+import Preferences
+import HarlemShakeRebornPrefsC
 
-let tweakColor: UIColor = UIColor(red: 112/255, green: 145/255, blue: 177/255, alpha: 1.0)
-let currentSuiteFilePath = plistPath + "com.pkgfiles.harlemshakerebornprefs.plist"
-
-let plistPath: String = FileManager.default.fileExists(atPath: "/var/jb/")
-    ? "/var/jb/var/mobile/Library/Preferences/"
-    : "/var/mobile/Library/Preferences/"
-
-var prefsAssetsPath: String {
-    var path: String = "/var/jb/Library/PreferenceBundles/HarlemShakeRebornPrefs.bundle/"
-    if !FileManager.default.fileExists(atPath: path) {
-        path = "/Library/PreferenceBundles/HarlemShakeRebornPrefs.bundle/"
+extension PSListController {
+    
+    open override func readPreferenceValue(_ specifier: PSSpecifier!) -> Any! {
+        let settings = NSDictionary(contentsOfFile: JailbreakTweakManager.shared.plistPath)
+        return settings?[specifier.property(forKey: "key") as Any] ?? specifier.property(forKey: "default")
     }
     
-    return path
+    open override func setPreferenceValue(_ value: Any!, specifier: PSSpecifier!) {
+        guard let prefs = NSMutableDictionary(contentsOfFile: JailbreakTweakManager.shared.plistPath) else { return }
+        prefs.setValue(value, forKey: specifier.property(forKey: "key") as! String)
+        prefs.write(toFile: JailbreakTweakManager.shared.plistPath, atomically: true)
+    }
 }

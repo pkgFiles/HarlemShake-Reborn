@@ -22,56 +22,53 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  
- */
+*/
 
 import Preferences
 
 class HSSingleCreditCell: PSTableCell {
     
-    enum Socials: String {
-        case twitterX = "X"
-        case kofi = "Ko-Fi"
-        
-        func getSocialURLString() -> String {
-            switch self {
-            case .twitterX: return "https://x.com/"
-            case .kofi: return "https://ko-fi.com/"
-            }
-        }
-    }
-    
     //MARK: - Propertys
-    private lazy var creditCell: HSCreditView = {
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(handleSocial))
-        let view = HSCreditView(username: (user: "★ Install Package Files", shorthand: "pkgFiles"), avatarUrlString: "1651534033019437056/BlFUdlQg_200x200.jpg")
-        view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(recognizer)
-        return view
-    }()
+    private let twitterCellView: HSCreditView = .init(frame: .zero)
     
     private lazy var kofiSupportImageView: UIImageView = {
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(handleSupport))
-        let imageView = UIImageView(image: UIImage(contentsOfFile: prefsAssetsPath + "Support/support_me_on_kofi_\(self.traitCollection.userInterfaceStyle == .light ? "dark" : "beige").png"))
+        let imageView = UIImageView(image: UIImage(contentsOfFile: JailbreakTweakManager.shared.prefsAssetsPath + "/Support/support_me_on_kofi_\(self.traitCollection.userInterfaceStyle == .light ? "dark" : "beige").png"))
         imageView.contentMode = .scaleAspectFit
-        imageView.addGestureRecognizer(recognizer)
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
+    //MARK: - Variables
+    weak var delegate: HSSingleCreditCellDelegate?
+    
     //MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String, specifier: PSSpecifier) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Functions
+    private func setupCell() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.contentView.addSubview(creditCell)
+        self.contentView.addSubview(twitterCellView)
         self.contentView.addSubview(kofiSupportImageView)
         
+        let twitterRecognizer: UITapGestureRecognizer = .init(target: self, action: #selector(didTapCell))
+        let kofiRecognizer: UITapGestureRecognizer = .init(target: self, action: #selector(didTapKofiButton))
+        twitterCellView.addGestureRecognizer(twitterRecognizer)
+        kofiSupportImageView.addGestureRecognizer(kofiRecognizer)
+        
         NSLayoutConstraint.activate([
-            creditCell.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-            creditCell.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-            creditCell.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            creditCell.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.725),
+            twitterCellView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            twitterCellView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            twitterCellView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+            twitterCellView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.725),
             
             kofiSupportImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 15),
             kofiSupportImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15),
@@ -80,21 +77,9 @@ class HSSingleCreditCell: PSTableCell {
         ])
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    func configure(for developer: Developer, with defaultAvatar: UIImage?) { twitterCellView.configure(with: developer, defaultAvatar: defaultAvatar) }
     
-    //MARK: - Functions
-    @objc private func handleSocial() {
-        loadPage(.twitterX)
-    }
-    
-    @objc private func handleSupport() {
-        loadPage(.kofi)
-    }
-    
-    private func loadPage(_ social: Socials) {
-        guard let url = URL(string: social.getSocialURLString() + creditCell.username.shorthand) else { return }
-        UIApplication.shared.open(url)
-    }
+    //MARK: - Actions
+    @objc private func didTapCell() { delegate?.openWebsite(.twitterX) }
+    @objc private func didTapKofiButton() { delegate?.openWebsite(.kofi) }
 }

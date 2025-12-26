@@ -2,6 +2,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import <Springboard/Springboard.h>
 #import "RemoteLog.h"
+#include <roothide.h>
+
+@interface NSDistributedNotificationCenter : NSNotificationCenter
+@end
 
 @interface CSCoverSheetView : UIView
 @end

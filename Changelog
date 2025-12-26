@@ -1,3 +1,8 @@
+1.1
+- Added RootHide support
+- Refactored a lot of code for higher code-quality
+- Changing preferences no longer needs a respring
+
 1.0.1
 - Added a alert that handles a stop mechanism of the HarlemShake (Re-Shake Device)
 - Bugfixes and improvements

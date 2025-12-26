@@ -26,10 +26,14 @@
 
 import UIKit
 
-struct SettingsModel: Codable {
-    // General
-    var isTweakEnabled: Bool = false
+extension UILabel {
     
-    // Appearance
-    // [...]
+    func createLabelWithFontPath(fontSize: CGFloat) -> UILabel {
+        let ttfName: String = "Boogaloo-Regular.ttf"
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        label.font = UIFont(ttfAtPath: JailbreakTweakManager.shared.prefsAssetsPath + "/Fonts/\(ttfName)", size: fontSize)
+        label.textColor = traitCollection.userInterfaceStyle == .light ? UIColor.black : UIColor.white
+        
+        return label
+    }
 }

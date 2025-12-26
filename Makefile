@@ -1,6 +1,6 @@
 TARGET := iphone:clang:latest:13.7
 INSTALL_TARGET_PROCESSES = SpringBoard
-THEOS_PACKAGE_SCHEME = rootless
+THEOS_PACKAGE_SCHEME = roothide
 
 include $(THEOS)/makefiles/common.mk
 

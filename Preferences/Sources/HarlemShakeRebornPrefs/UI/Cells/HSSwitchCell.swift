@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  
- */
+*/
 
 import Preferences
 
@@ -51,32 +51,35 @@ class HSSwitchCell: PSTableCell {
     
     private lazy var cellSwitch: UISwitch = {
         let _switch = UISwitch()
-        _switch.onTintColor = tweakColor
-        _switch.addTarget(self, action: #selector(handleSwitch), for: .valueChanged)
+        _switch.onTintColor = JailbreakTweakManager.shared.configuration.tweakColor
+        _switch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
         _switch.translatesAutoresizingMaskIntoConstraints = false
         return _switch
     }()
     
     //MARK: - Variables
-    private let currentSuiteName: String = "com.pkgfiles.harlemshakerebornprefs"
+    weak var delegate: HSSwitchCellDelegate?
     
     //MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String, specifier: PSSpecifier) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        if let plistData: NSDictionary = NSDictionary(contentsOfFile: "\(plistPath)\(currentSuiteName).plist"),
-           let propertyKey: String = specifier.property(forKey: "key") as? String,
-           let propertyValue: Bool = plistData.value(forKey: propertyKey) as? Bool {
-            cellSwitch.isOn = propertyValue
-        }
-        
-        cellTitleLabel.text = specifier.property(forKey: "cellTitleLabel") as? String
-        cellSubtitleLabel.text = specifier.property(forKey: "cellSubtitleLabel") as? String
-        
+        setupCell(with: specifier)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Functions
+    private func setupCell(with specifier: PSSpecifier) {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(cellTitleLabel)
         self.contentView.addSubview(cellSubtitleLabel)
         self.contentView.addSubview(cellSwitch)
+        
+        cellTitleLabel.text = specifier.property(forKey: "cellTitleLabel") as? String
+        cellSubtitleLabel.text = specifier.property(forKey: "cellSubtitleLabel") as? String
         
         NSLayoutConstraint.activate([
             cellTitleLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor, constant: -7.5),
@@ -90,17 +93,13 @@ class HSSwitchCell: PSTableCell {
             cellSwitch.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             cellSwitch.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -22.5)
         ])
+        
+        guard let plistData: NSDictionary = NSDictionary(contentsOfFile: JailbreakTweakManager.shared.plistPath),
+              let propertyKey: String = specifier.property(forKey: "key") as? String,
+              let propertyValue: Bool = plistData.value(forKey: propertyKey) as? Bool else { return }
+        cellSwitch.isOn = propertyValue
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Functions
-    @objc private func handleSwitch() {
-        guard let plistData: NSDictionary = NSDictionary(contentsOfFile: "\(plistPath)\(currentSuiteName).plist") else { return }
-        guard let propertyKey: String = specifier.property(forKey: "key") as? String else { return }
-        plistData.setValue(cellSwitch.isOn, forKey: propertyKey)
-        plistData.write(toFile: "\(plistPath)\(currentSuiteName).plist", atomically: true)
-    }
+    //MARK: - Actions
+    @objc private func switchValueDidChange() { delegate?.switchCell(valueChanged: cellSwitch.isOn, for: specifier) }
 }
